@@ -6,14 +6,16 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import src.gui.Controller;
+
+import java.io.File;
 
 
 public class Main extends Application {
@@ -25,7 +27,27 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Pane root = new Pane();
+        String musicFile = "assets/opening_intro.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
+        mediaPlayer.play();
+
+        // Load the image
+        ImageView imageView = new ImageView(new Image("assets/opening_background.jpg")); // Replace with your image path
+
+        // Set ImageView properties to stretch the image
+        imageView.setFitHeight(600); // Set to your scene height
+        imageView.setFitWidth(1000); // Set to your scene width
+        imageView.setPreserveRatio(false);
+
+        // Create the fade transition
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(12), imageView);
+        fadeTransition.setFromValue(0);  // Start fully transparent
+        fadeTransition.setToValue(1);    // End fully opaque
+        fadeTransition.play();
+
+        Pane root = new Pane(imageView);
 
         Font aegukFont = Font.loadFont(getClass().getResourceAsStream("/assets/독립서체_윤봉길_GS.otf"), 24);
         String[] lines = {
@@ -45,7 +67,7 @@ public class Main extends Application {
             text.setLayoutX(xPos);
             text.setLayoutY(yPos);
 
-            fadeIn(text, delay);
+            fadeIn(text, 2, delay);
 
             root.getChildren().add(text);
 
@@ -59,7 +81,7 @@ public class Main extends Application {
         button.setLayoutY(yPos);
         button.setPrefHeight(100);
 
-        fadeIn(button, delay);
+        fadeIn(button, 2, delay);
         root.getChildren().add(button);
 
         Scene scene = new Scene(root, 1000, 600);
@@ -70,12 +92,13 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void fadeIn(Node node, double delay) {
+    public void fadeIn(Node node, double duration, double delay) {
         node.setOpacity(0);
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(2), node);
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(duration), node);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);
         fadeIn.setDelay(Duration.seconds(delay));
         fadeIn.play();
     }
+
 }
