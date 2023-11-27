@@ -14,6 +14,6 @@ public class Na extends AbstractGameScene{
 
     @Override
     public void initialize() {
-
+        System.out.println("Game Na started");
     }
 }

@@ -4,9 +4,13 @@ import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -26,14 +30,17 @@ import java.io.File;
 
 public class Main extends Application {
     Stage primaryStage;
-    Scene start_scene;
-    Scene main_scene;
-    Button start_button;
-    Button kim_button;
-    Button na_button;
-    Button yoon_button;
-    double screen_width = 1000;
-    double screen_height = 600;
+    Scene startScene;
+    Scene mainScene;
+    Button startButton;
+    Button kimButton;
+    Button naButton;
+    Button yoonButton;
+    double screenWidth = 1000;
+    double screenHeight = 600;
+    Media mainSound;
+    MediaPlayer mainMediaPlayer;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -43,23 +50,93 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         display_start(this.primaryStage);
-        display_main();
-
-
     }
     public void display_main() {
-        kim_button = new Button("김");
-        na_button = new Button("나");
-        yoon_button = new Button("윤");
+        primaryStage.setTitle("'김나윤' 폼 미쳤다!");
 
-        HBox name_box = new HBox(20);
-        name_box.getChildren().addAll(kim_button, na_button, yoon_button);
+        String musicFile = "assets/main_bgm.mp3";
+        mainSound = new Media(new File(musicFile).toURI().toString());
+        mainMediaPlayer = new MediaPlayer(mainSound);
+        mainMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
+        mainMediaPlayer.play();
 
-        kim_button.setOnAction(e -> showKim());
-        na_button.setOnAction(e -> showNa());
-        yoon_button.setOnAction(e -> showYoon());
+        kimButton = new Button();
+        naButton = new Button();
+        yoonButton = new Button();
+        kimButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
+        naButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
+        yoonButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
 
-        main_scene = new Scene(name_box, screen_width, screen_height);
+        Image kimImage = new Image("assets/kim.jpg");
+        ImageView kimImageView = new ImageView(kimImage);
+        kimImageView.setFitWidth(250);
+        kimImageView.setFitHeight(250);
+        kimImageView.setPreserveRatio(false);
+        kimButton.setGraphic(kimImageView);
+        kimButton.setContentDisplay(ContentDisplay.TOP);
+        kimButton.setStyle("-fx-background-color: transparent;");
+        StackPane kimPane = new StackPane(kimButton);
+        Label kimText = new Label("김");
+        kimText.setFont(aegukFont(100)); // Adjust font size as needed
+        kimText.setAlignment(Pos.CENTER);
+        kimPane.setAlignment(Pos.CENTER);
+        kimImageView.setMouseTransparent(true);
+        kimText.setMouseTransparent(true);
+        kimPane.getChildren().addAll(kimImageView, kimText);
+
+        Image naImage = new Image("assets/na.jpg");
+        ImageView naImageView = new ImageView(naImage);
+        naImageView.setFitWidth(250);
+        naImageView.setFitHeight(250);
+        naImageView.setPreserveRatio(false);
+        naButton.setGraphic(naImageView);
+        naButton.setContentDisplay(ContentDisplay.TOP);
+        naButton.setStyle("-fx-background-color: transparent;");
+        StackPane naPane = new StackPane(naButton);
+        Label naText = new Label("나");
+        naText.setFont(aegukFont(100)); // Adjust font size as needed
+        naText.setAlignment(Pos.CENTER);
+        naPane.setAlignment(Pos.CENTER);
+        naImageView.setMouseTransparent(true);
+        naText.setMouseTransparent(true);
+        naPane.getChildren().addAll(naImageView, naText);
+
+        Image yoonImage = new Image("assets/yoon.png");
+        ImageView yoonImageView = new ImageView(yoonImage);
+        yoonImageView.setFitWidth(250);
+        yoonImageView.setFitHeight(250);
+        yoonImageView.setPreserveRatio(false);
+        yoonButton.setGraphic(yoonImageView);
+        yoonButton.setContentDisplay(ContentDisplay.TOP);
+        yoonButton.setStyle("-fx-background-color: transparent;");
+        StackPane yoonPane = new StackPane(yoonButton);
+        Label yoonText = new Label("윤");
+        yoonText.setFont(aegukFont(100)); // Adjust font size as needed
+        yoonText.setAlignment(Pos.CENTER);
+        yoonPane.setAlignment(Pos.CENTER);
+        yoonImageView.setMouseTransparent(true);
+        yoonText.setMouseTransparent(true);
+        yoonPane.getChildren().addAll(yoonImageView, yoonText);
+
+        HBox nameBox = new HBox(45);
+        nameBox.getChildren().addAll(kimPane, naPane, yoonPane);
+        nameBox.setAlignment(Pos.CENTER);
+
+        ImageView mainBackground = new ImageView(new Image("assets/main_background.png")); // Replace with your image path
+        mainBackground.setFitHeight(600); // Set to your scene height
+        mainBackground.setFitWidth(1000); // Set to your scene width
+        mainBackground.setPreserveRatio(false);
+
+        Pane root = new Pane(mainBackground);
+        root.getChildren().add(nameBox);
+        nameBox.setLayoutX(60);
+        nameBox.setLayoutY(250);
+
+        mainScene = new Scene(root, screenWidth, screenHeight);
+
+        kimButton.setOnAction(e -> showKim());
+        naButton.setOnAction(e -> showNa());
+        yoonButton.setOnAction(e -> showYoon());
     }
 
     public void display_start(Stage  primaryStage) {
@@ -85,7 +162,7 @@ public class Main extends Application {
 
         Pane root = new Pane(imageView);
 
-        Font aegukFont = Font.loadFont(getClass().getResourceAsStream("/assets/독립서체_윤봉길_GS.otf"), 24);
+
         String[] lines = {
                 "천사 (나무위키): 하늘의 사자. '신의 뜻을 전하기 위해 내려온 자'라는 의미이다.",
                 "본명 '김나윤'은 1999년 01월 04일 생으로 세기말에 강림하신 1004 그 자체다.",
@@ -97,7 +174,7 @@ public class Main extends Application {
         double yPos = 120;
         for (String line : lines) {
             Text text = new Text(line);
-            text.setFont(aegukFont);
+            text.setFont(aegukFont(24));
 
             double xPos = (1000 - text.getLayoutBounds().getWidth()) / 2;
             text.setLayoutX(xPos);
@@ -113,51 +190,61 @@ public class Main extends Application {
 
         SVGPath heartShape = new SVGPath();
         heartShape.setContent("M2914.4 2077.3c-6.3-13-422.7-867-1144-259C763 2879.5 2894 4325.6 2914.3 4339.4c20.4-13.8 2151.3-1460 1144-2521.3-721.4-608-1137.7 246-1144 259z");
-        start_button = new Button("생일 선물 게임\n        ㄱㄱ");
-        start_button.setShape(heartShape);
-        start_button.setFont(Font.font("System", 30));
-        start_button.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;"); // Set background color and text color
-        start_button.setLayoutX(350);
-        start_button.setLayoutY(yPos - 50);
-        start_button.setMinSize(300, 200);
+        startButton = new Button("생일 선물 게임\n        ㄱㄱ");
+        startButton.setShape(heartShape);
+        startButton.setFont(Font.font("System", 30));
+        startButton.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;"); // Set background color and text color
+        startButton.setLayoutX(350);
+        startButton.setLayoutY(yPos - 50);
+        startButton.setMinSize(300, 200);
 
-        fadeIn(start_button, 2, delay);
-        root.getChildren().add(start_button);
-        start_button.setOnAction(new EventHandler<ActionEvent>() {
+        fadeIn(startButton, 2, delay);
+        root.getChildren().add(startButton);
+        startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                primaryStage.setScene(main_scene);
+                display_main();
+                primaryStage.setScene(mainScene);
+                mediaPlayer.stop();
             }
         });
 
-        start_scene = new Scene(root, screen_width, screen_height);
+        startScene = new Scene(root, screenWidth, screenHeight);
         Image logo = new Image("assets/logo.jpg");
         primaryStage.getIcons().add(logo);
         primaryStage.setTitle("나윤이 생일 축하해!");
-        primaryStage.setScene(start_scene);
+        primaryStage.setScene(startScene);
         primaryStage.show();
 
 
     }
 
     public void showMainScene() {
-        primaryStage.setScene(main_scene);
+        mainMediaPlayer.play();
+        primaryStage.setTitle("'김나윤' 폼 미쳤다!");
+        primaryStage.setScene(mainScene);
         primaryStage.show();
     }
 
     public void showKim() {
+        mainMediaPlayer.pause();
+        primaryStage.setTitle("'김' 폼 미쳤다!");
         Kim kim = new Kim(this);
         primaryStage.setScene(kim.getScene());
         primaryStage.show();
     }
 
     public void showNa() {
+        mainMediaPlayer.pause();
+        primaryStage.setTitle("'나' 폼 미쳤다!");
         Na na = new Na(this);
         primaryStage.setScene(na.getScene());
         primaryStage.show();
     }
 
     public void showYoon() {
+        mainMediaPlayer.pause();
+        primaryStage.setTitle("'윤' 폼 미쳤다!");
         Yoon yoon = new Yoon(this);
         primaryStage.setScene(yoon.getScene());
         primaryStage.show();
@@ -172,4 +259,7 @@ public class Main extends Application {
         fadeIn.play();
     }
 
+    public Font aegukFont(double size) {
+        return Font.loadFont(getClass().getResourceAsStream("/assets/독립서체_윤봉길_GS.otf"), size);
+    }
 }
