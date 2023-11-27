@@ -19,12 +19,14 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import src.game.Kim;
 import src.game.Na;
 import src.game.Yoon;
 
+import javax.tools.Tool;
 import java.io.File;
 
 
@@ -122,15 +124,20 @@ public class Main extends Application {
         nameBox.getChildren().addAll(kimPane, naPane, yoonPane);
         nameBox.setAlignment(Pos.CENTER);
 
-        ImageView mainBackground = new ImageView(new Image("assets/main_background.png")); // Replace with your image path
-        mainBackground.setFitHeight(600); // Set to your scene height
-        mainBackground.setFitWidth(1000); // Set to your scene width
-        mainBackground.setPreserveRatio(false);
+        Image backgroundImage = new Image("assets/main_background.png");
+        BackgroundImage bgImage = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(screenWidth, screenHeight, false, false, true, true)
+        );
 
-        Pane root = new Pane(mainBackground);
+        Pane root = new Pane();
+        root.setBackground(new Background(bgImage));
         root.getChildren().add(nameBox);
         nameBox.setLayoutX(60);
-        nameBox.setLayoutY(250);
+        nameBox.setLayoutY(270);
 
         mainScene = new Scene(root, screenWidth, screenHeight);
 
@@ -150,8 +157,8 @@ public class Main extends Application {
         ImageView imageView = new ImageView(new Image("assets/opening_background.jpg")); // Replace with your image path
 
         // Set ImageView properties to stretch the image
-        imageView.setFitHeight(600); // Set to your scene height
-        imageView.setFitWidth(1000); // Set to your scene width
+        imageView.setFitHeight(screenHeight); // Set to your scene height
+        imageView.setFitWidth(screenWidth); // Set to your scene width
         imageView.setPreserveRatio(false);
 
         // Create the fade transition
@@ -261,5 +268,9 @@ public class Main extends Application {
 
     public Font aegukFont(double size) {
         return Font.loadFont(getClass().getResourceAsStream("/assets/독립서체_윤봉길_GS.otf"), size);
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }
