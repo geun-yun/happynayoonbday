@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -16,7 +18,7 @@ import java.util.List;
 
 public class Kim extends AbstractGameScene {
     private AnimationTimer timer;
-    private List<Node> drop = new ArrayList<>();
+    private List<ImageView> drop = new ArrayList<>();
     private double mouseX;
     private Rectangle cont;
     private double speed;
@@ -44,9 +46,9 @@ public class Kim extends AbstractGameScene {
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
             speed += falling / 3000;
-            Circle newCircle = createCircle();
-            drop.add(newCircle);
-            root.getChildren().add(newCircle);
+            ImageView seaweed = createSeaweed();
+            drop.add(seaweed);
+            root.getChildren().add(seaweed);
         }));
 
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -66,15 +68,35 @@ public class Kim extends AbstractGameScene {
         scene.setOnMouseMoved(e -> mouseX = e.getX());
     }
 
-    private Circle createCircle() {
-        Circle circle = new Circle();
-        circle.setLayoutX(rand(0, 400));
-        circle.setLayoutY(1);
-        circle.setRadius(6);
-        circle.setFill(Color.BLUE);
-        return circle;
+    private ImageView createSeaweed() {
+        Image seaweed = new Image("assets/seaweed.jpg");
+        ImageView seaweedImageView = new ImageView(seaweed);
+        seaweedImageView.setLayoutX(rand(0, 400));
+        seaweedImageView.setLayoutY(1);
+        seaweedImageView.setFitHeight(50);
+        seaweedImageView.setFitWidth(50);
+        return seaweedImageView;
     }
 
+    private ImageView createGold() {
+        Image gold = new Image("assets/gold.jpg");
+        ImageView goldImageView = new ImageView(gold);
+        goldImageView.setLayoutX(rand(0, 400));
+        goldImageView.setLayoutY(1);
+        goldImageView.setFitHeight(50);
+        goldImageView.setFitWidth(50);
+        return goldImageView;
+    }
+
+    private ImageView createVapour() {
+        Image vapour = new Image("assets/vapour.jpg");
+        ImageView vapourImageView = new ImageView(vapour);
+        vapourImageView.setLayoutX(rand(0, 400));
+        vapourImageView.setLayoutY(1);
+        vapourImageView.setFitHeight(50);
+        vapourImageView.setFitWidth(50);
+        return vapourImageView;
+    }
     private Rectangle createRectangle() {
         Rectangle rectangle = new Rectangle();
         rectangle.setLayoutX(200);
@@ -93,15 +115,15 @@ public class Kim extends AbstractGameScene {
         cont.setLayoutX(mouseX);
 
         for (int i = 0; i < drop.size(); i++) {
-            Circle circle = (Circle) drop.get(i);
-            circle.setLayoutY(circle.getLayoutY() + speed + circle.getLayoutY() / 150);
+            ImageView seaweed = drop.get(i);
+            seaweed.setLayoutY(seaweed.getLayoutY() + speed + seaweed.getLayoutY() / 150);
 
-            if (circle.getLayoutX() > cont.getLayoutX() && circle.getLayoutX() < cont.getLayoutX() + 70 &&
-                    circle.getLayoutY() >= 550) {
-                root.getChildren().remove(circle);
+            if (seaweed.getLayoutX() > cont.getLayoutX() && seaweed.getLayoutX() < cont.getLayoutX() + 70 &&
+                    seaweed.getLayoutY() >= 550) {
+                root.getChildren().remove(seaweed);
                 drop.remove(i);
-            } else if (circle.getLayoutY() >= 590) {
-                root.getChildren().remove(circle);
+            } else if (seaweed.getLayoutY() >= 590) {
+                root.getChildren().remove(seaweed);
                 drop.remove(i);
                 missed += 1;
                 lblMissed.setText("Missed: " + missed);
