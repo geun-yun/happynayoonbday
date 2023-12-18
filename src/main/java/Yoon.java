@@ -21,31 +21,32 @@ public class Yoon extends src.main.java.AbstractGameScene {
 
     public Yoon(src.main.java.Main main) {
         super(main, 1000, 600);
+        setInstructionText("윤 -> 굥 (나윤이는 특별하니까 특별히 뒤집음) -> 공 -> 0 -> 숫자 -> 숫자게임" +
+                "Welcome to Yoon!\n" +
+                "Instructions:\n" +
+                "1. A target number will be shown.\n" +
+                "2. You have to try to make that target number by using 1, 0, and 4 exactly once with any mathematical operation.\n" +
+                "3. You can combine numbers (e.g., 10 or 10.4) to create new numbers.\n" +
+                "4. If you match the target number, you earn 2.5 times the target number in points.");
     }
 
-    @Override
-    public void initialize() {
-        VBox vBox = new VBox(10);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().add(createInstructionsText());
+//    @Override
+//    public void initialize() {
+//        VBox vBox = new VBox(10);
+//        vBox.setAlignment(Pos.CENTER);
+//        vBox.getChildren().add(createInstructionsText());
+//
+//        Button startButton = new Button("Start Game");
+//        startButton.setOnAction(e -> startGame());
+//
+//        root.getChildren().addAll(vBox, startButton);
+//    }
 
-        Button startButton = new Button("Start Game");
-        startButton.setOnAction(e -> startGame());
-
-        root.getChildren().addAll(vBox, startButton);
-    }
-
-    private Text createInstructionsText() {
-        return new Text(
-                "윤 -> 굥 (나윤이는 특별하니까 특별히 뒤집음) -> 공 -> 0 -> 숫자 -> 숫자게임" +
-                        "Welcome to Yoon!\n" +
-                        "Instructions:\n" +
-                        "1. A target number will be shown.\n" +
-                        "2. You have to try to make that target number by using 1, 0, and 4 exactly once with any mathematical operation.\n" +
-                        "3. You can combine numbers (e.g., 10 or 10.4) to create new numbers.\n" +
-                        "4. If you match the target number, you earn 2.5 times the target number in points."
-        );
-    }
+//    private Text createInstructionsText() {
+//        return new Text(
+//
+//        );
+//    }
 
     public void onPlayerSubmit(String input) {
         if(isCorrectAnswer(input)) {
@@ -56,16 +57,13 @@ public class Yoon extends src.main.java.AbstractGameScene {
         }
     }
 
-    private void startGame() {
+    public void displayGame() {
         targetNumber = new Random().nextInt(10) + 1;
         used1 = used0 = used4 = false;
         setupGameplayUI();
     }
 
     private void setupGameplayUI() {
-        root.getChildren().remove(1); // Clear previous UI elements
-        root.getChildren().remove(1); // Clear previous UI elements
-
         Label targetNumberLabel = new Label("Target Number: " + targetNumber);
         playerInputField = new TextField();
         playerInputField.setPromptText("Enter your solution");
@@ -78,6 +76,8 @@ public class Yoon extends src.main.java.AbstractGameScene {
 
         HBox hbox = new HBox(10, targetNumberLabel, playerInputField, button1, button0, button4, submitButton);
         hbox.setAlignment(Pos.CENTER);
+        hbox.setLayoutX(100);
+        hbox.setLayoutY(50);
 
         root.getChildren().add(hbox);
     }
@@ -151,6 +151,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
         if (isCorrect) {
             int pointsEarned = (int)(2.5 * targetNumber);
             src.main.java.GlobalState.getInstance().addPoints(pointsEarned);
+            updatePoints();
             // Display success message and points earned
             System.out.println("Right answer");
         } else {

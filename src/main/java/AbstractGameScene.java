@@ -2,15 +2,21 @@ package src.main.java;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public abstract class AbstractGameScene implements src.main.java.GameScene {
     protected src.main.java.Main main;
     protected Scene scene;
     protected Button back_button;
     protected Pane root; // Using Pane for layout
+    protected Label instructionsLabel;
+    protected Button startGameButton;
+    protected Label pointsLabel; // Label to display points
+
 
     public AbstractGameScene(src.main.java.Main main, double width, double height) {
         this.main = main;
@@ -18,7 +24,18 @@ public abstract class AbstractGameScene implements src.main.java.GameScene {
         this.back_button = createBackButton();
         this.root.getChildren().add(back_button); // Add button to the Pane
         this.scene = new Scene(root, width, height); // Set Pane as the root of the scene
-        initialize();
+
+        pointsLabel = new Label("Points: " + src.main.java.GlobalState.getInstance().getTotalPoints() + "/104");
+        pointsLabel.setLayoutX(10); // Set X position
+        pointsLabel.setLayoutY(10); // Set Y position
+        root.getChildren().add(pointsLabel);
+
+        initializeInstruction();
+    }
+
+    // Method to update points display
+    public void updatePoints() {
+        pointsLabel.setText("Points: " + src.main.java.GlobalState.getInstance().getTotalPoints() + "/104");
     }
 
     protected Button createBackButton() {
@@ -44,6 +61,27 @@ public abstract class AbstractGameScene implements src.main.java.GameScene {
     }
 
     // Abstract method that must be implemented by subclasses
-    @Override
-    public abstract void initialize();
+    private void initializeInstruction() {
+        instructionsLabel = new Label();
+        startGameButton = new Button("Start Game");
+
+        startGameButton.setOnAction(e -> startGame());
+
+        root.getChildren().addAll(instructionsLabel, startGameButton);
+    }
+
+    protected void setInstructionText(String text) {
+        instructionsLabel.setText(text);
+        instructionsLabel.setFont(new Font(50));
+        double xPos = (1000 - instructionsLabel.getLayoutBounds().getWidth()) / 2;
+        instructionsLabel.setLayoutX(xPos);
+        instructionsLabel.setLayoutY(400);
+    }
+
+    private void startGame() {
+        root.getChildren().remove(instructionsLabel); // Clear previous UI elements
+        root.getChildren().remove(startGameButton); // Clear previous UI elements
+        displayGame();
+    }
+    protected abstract void displayGame();
 }

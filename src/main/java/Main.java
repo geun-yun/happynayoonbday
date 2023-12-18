@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -28,10 +29,12 @@ public class Main extends Application {
     Stage primaryStage;
     Scene startScene;
     Scene mainScene;
+    Scene endScene;
     Button startButton;
     Button kimButton;
     Button naButton;
     Button yoonButton;
+    Button endButton;
     double screenWidth = 1000;
     double screenHeight = 600;
     Media mainSound;
@@ -46,99 +49,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         display_start(this.primaryStage);
-    }
-    public void display_main() {
-        primaryStage.setTitle("'김나윤' 폼 미쳤다!");
-
-        String musicFile = "assets/main_bgm.mp3";
-//        mainSound = new Media(getClass().getResource(musicFile).toExternalForm());
-        mainSound = new Media(new File(musicFile).toURI().toString());
-        mainMediaPlayer = new MediaPlayer(mainSound);
-        mainMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
-        mainMediaPlayer.play();
-
-        kimButton = new Button();
-        naButton = new Button();
-        yoonButton = new Button();
-        kimButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
-        naButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
-        yoonButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
-
-        Image kimImage = new Image(getClass().getResourceAsStream("/kim.jpg"));
-        ImageView kimImageView = new ImageView(kimImage);
-        kimImageView.setFitWidth(250);
-        kimImageView.setFitHeight(250);
-        kimImageView.setPreserveRatio(false);
-        kimButton.setGraphic(kimImageView);
-        kimButton.setContentDisplay(ContentDisplay.TOP);
-        kimButton.setStyle("-fx-background-color: transparent;");
-        StackPane kimPane = new StackPane(kimButton);
-        Label kimText = new Label("김");
-        kimText.setFont(aegukFont(100)); // Adjust font size as needed
-        kimText.setAlignment(Pos.CENTER);
-        kimPane.setAlignment(Pos.CENTER);
-        kimImageView.setMouseTransparent(true);
-        kimText.setMouseTransparent(true);
-        kimPane.getChildren().addAll(kimImageView, kimText);
-
-        Image naImage = new Image(getClass().getResourceAsStream("/na.jpg"));
-        ImageView naImageView = new ImageView(naImage);
-        naImageView.setFitWidth(250);
-        naImageView.setFitHeight(250);
-        naImageView.setPreserveRatio(false);
-        naButton.setGraphic(naImageView);
-        naButton.setContentDisplay(ContentDisplay.TOP);
-        naButton.setStyle("-fx-background-color: transparent;");
-        StackPane naPane = new StackPane(naButton);
-        Label naText = new Label("나");
-        naText.setFont(aegukFont(100)); // Adjust font size as needed
-        naText.setAlignment(Pos.CENTER);
-        naPane.setAlignment(Pos.CENTER);
-        naImageView.setMouseTransparent(true);
-        naText.setMouseTransparent(true);
-        naPane.getChildren().addAll(naImageView, naText);
-
-        Image yoonImage = new Image(getClass().getResourceAsStream("/yoon.png"));
-        ImageView yoonImageView = new ImageView(yoonImage);
-        yoonImageView.setFitWidth(250);
-        yoonImageView.setFitHeight(250);
-        yoonImageView.setPreserveRatio(false);
-        yoonButton.setGraphic(yoonImageView);
-        yoonButton.setContentDisplay(ContentDisplay.TOP);
-        yoonButton.setStyle("-fx-background-color: transparent;");
-        StackPane yoonPane = new StackPane(yoonButton);
-        Label yoonText = new Label("윤");
-        yoonText.setFont(aegukFont(100)); // Adjust font size as needed
-        yoonText.setAlignment(Pos.CENTER);
-        yoonPane.setAlignment(Pos.CENTER);
-        yoonImageView.setMouseTransparent(true);
-        yoonText.setMouseTransparent(true);
-        yoonPane.getChildren().addAll(yoonImageView, yoonText);
-
-        HBox nameBox = new HBox(45);
-        nameBox.getChildren().addAll(kimPane, naPane, yoonPane);
-        nameBox.setAlignment(Pos.CENTER);
-
-        Image backgroundImage = new Image(getClass().getResourceAsStream("/main_background.png"));
-        BackgroundImage bgImage = new BackgroundImage(
-                backgroundImage,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(screenWidth, screenHeight, false, false, true, true)
-        );
-
-        Pane root = new Pane();
-        root.setBackground(new Background(bgImage));
-        root.getChildren().add(nameBox);
-        nameBox.setLayoutX(60);
-        nameBox.setLayoutY(270);
-
-        mainScene = new Scene(root, screenWidth, screenHeight);
-
-        kimButton.setOnAction(e -> showKim());
-        naButton.setOnAction(e -> showNa());
-        yoonButton.setOnAction(e -> showYoon());
     }
 
     public void display_start(final Stage  primaryStage) {
@@ -218,8 +128,126 @@ public class Main extends Application {
         primaryStage.setTitle("나윤이 생일 축하해!");
         primaryStage.setScene(startScene);
         primaryStage.show();
+    }
 
+    public void display_main() {
+        primaryStage.setTitle("'김나윤' 폼 미쳤다!");
 
+        String musicFile = "assets/main_bgm.mp3";
+        mainSound = new Media(new File(musicFile).toURI().toString());
+        mainMediaPlayer = new MediaPlayer(mainSound);
+        mainMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
+        mainMediaPlayer.play();
+
+        kimButton = new Button();
+        naButton = new Button();
+        yoonButton = new Button();
+        kimButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
+        naButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
+        yoonButton.setStyle("-fx-font-size: 70px; -fx-pref-width: 300; -fx-pref-height: 300px;");
+
+        Image kimImage = new Image(getClass().getResourceAsStream("/kim.jpg"));
+        ImageView kimImageView = new ImageView(kimImage);
+        kimImageView.setFitWidth(250);
+        kimImageView.setFitHeight(250);
+        kimImageView.setPreserveRatio(false);
+        kimButton.setGraphic(kimImageView);
+        kimButton.setContentDisplay(ContentDisplay.TOP);
+        kimButton.setStyle("-fx-background-color: transparent;");
+        StackPane kimPane = new StackPane(kimButton);
+        Label kimText = new Label("김");
+        kimText.setFont(aegukFont(100)); // Adjust font size as needed
+        kimText.setAlignment(Pos.CENTER);
+        kimPane.setAlignment(Pos.CENTER);
+        kimImageView.setMouseTransparent(true);
+        kimText.setMouseTransparent(true);
+        kimPane.getChildren().addAll(kimImageView, kimText);
+
+        Image naImage = new Image(getClass().getResourceAsStream("/na.jpg"));
+        ImageView naImageView = new ImageView(naImage);
+        naImageView.setFitWidth(250);
+        naImageView.setFitHeight(250);
+        naImageView.setPreserveRatio(false);
+        naButton.setGraphic(naImageView);
+        naButton.setContentDisplay(ContentDisplay.TOP);
+        naButton.setStyle("-fx-background-color: transparent;");
+        StackPane naPane = new StackPane(naButton);
+        Label naText = new Label("나");
+        naText.setFont(aegukFont(100)); // Adjust font size as needed
+        naText.setAlignment(Pos.CENTER);
+        naPane.setAlignment(Pos.CENTER);
+        naImageView.setMouseTransparent(true);
+        naText.setMouseTransparent(true);
+        naPane.getChildren().addAll(naImageView, naText);
+
+        Image yoonImage = new Image(getClass().getResourceAsStream("/yoon.jpg"));
+        ImageView yoonImageView = new ImageView(yoonImage);
+        yoonImageView.setFitWidth(250);
+        yoonImageView.setFitHeight(250);
+        yoonImageView.setPreserveRatio(false);
+        yoonButton.setGraphic(yoonImageView);
+        yoonButton.setContentDisplay(ContentDisplay.TOP);
+        yoonButton.setStyle("-fx-background-color: transparent;");
+        StackPane yoonPane = new StackPane(yoonButton);
+        Label yoonText = new Label("윤");
+        yoonText.setFont(aegukFont(100)); // Adjust font size as needed
+        yoonText.setAlignment(Pos.CENTER);
+        yoonPane.setAlignment(Pos.CENTER);
+        yoonImageView.setMouseTransparent(true);
+        yoonText.setMouseTransparent(true);
+        yoonPane.getChildren().addAll(yoonImageView, yoonText);
+
+        HBox nameBox = new HBox(45);
+        nameBox.getChildren().addAll(kimPane, naPane, yoonPane);
+        nameBox.setAlignment(Pos.CENTER);
+
+        Image backgroundImage = new Image(getClass().getResourceAsStream("/main_background.png"));
+        BackgroundImage bgImage = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(screenWidth, screenHeight, false, false, true, true)
+        );
+
+        endButton = new Button("애정도 104% 충족 완료! 마지막 스테이지 ㄱㄱ");
+        endButton.setVisible(false);
+        endButton.setLayoutX(100);
+        endButton.setLayoutY(50);
+        StackPane endPane = new StackPane(endButton);
+
+        Pane root = new Pane();
+        root.setBackground(new Background(bgImage));
+        root.getChildren().addAll(nameBox,endPane);
+        nameBox.setLayoutX(60);
+        nameBox.setLayoutY(270);
+
+        mainScene = new Scene(root, screenWidth, screenHeight);
+
+        kimButton.setOnAction(e -> showKim());
+        naButton.setOnAction(e -> showNa());
+        yoonButton.setOnAction(e -> showYoon());
+    }
+
+    public void display_end() {
+        primaryStage.setTitle("나윤이 생일 축하 편지");
+
+//        String musicFile = "assets/main_bgm.mp3";
+//        mainSound = new Media(new File(musicFile).toURI().toString());
+//        mainMediaPlayer = new MediaPlayer(mainSound);
+//        mainMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
+//        mainMediaPlayer.play();
+
+        Text text = new Text("생축!");
+        text.setFont(Font.font("Verdana", 20));
+        text.setFill(Color.BLUE); // Set text color
+
+        StackPane root = new StackPane();
+        root.getChildren().add(text);
+
+        endScene = new Scene(root, screenWidth, screenHeight);
+        primaryStage.setScene(endScene);
+        primaryStage.show();
     }
 
     public void showMainScene() {
@@ -227,6 +255,11 @@ public class Main extends Application {
         primaryStage.setTitle("'김나윤' 폼 미쳤다!");
         primaryStage.setScene(mainScene);
         primaryStage.show();
+
+        if (src.main.java.GlobalState.getInstance().getTotalPoints() >= 104) {
+            endButton.setVisible(true);
+            endButton.setOnAction(e -> display_end());
+        }
     }
 
     public void showKim() {

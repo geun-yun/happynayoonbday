@@ -3,11 +3,15 @@ package src.main.java;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -21,23 +25,26 @@ public class Kim extends src.main.java.AbstractGameScene {
     private double speed;
     private double falling;
     private Label lblMissed;
-    private int missed;
+//    private int missed;
 
     public Kim(src.main.java.Main main) {
         super(main, 1000, 600);
+        setInstructionText("김 김 김");
     }
 
-    @Override
-    public void initialize() {
-        displayGame();
-    }
+//    @Override
+//    public void initialize() {
+//        VBox vBox = new VBox(10);
+//        vBox.setAlignment(Pos.CENTER);
+//        vBox.getChildren().add(createInstructionsText());
+//
+//        Button startButton = new Button("Start Game");
+//        startButton.setOnAction(e -> startGame());
+//
+//        root.getChildren().addAll(vBox, startButton);
+//    }
 
     public void displayGame() {
-        lblMissed = new Label("Missed: 0");
-        lblMissed.setLayoutX(10);
-        lblMissed.setLayoutY(10);
-        missed = 0;
-
         speed = 1;
         falling = 500;
 
@@ -60,7 +67,7 @@ public class Kim extends src.main.java.AbstractGameScene {
         timer.start();
 
         cont = createRectangle();
-        root.getChildren().addAll(cont, lblMissed);
+        root.getChildren().addAll(cont);
 
         scene.setOnMouseMoved(e -> mouseX = e.getX());
     }
@@ -119,11 +126,11 @@ public class Kim extends src.main.java.AbstractGameScene {
                     seaweed.getLayoutY() >= 550) {
                 root.getChildren().remove(seaweed);
                 drop.remove(i);
+                src.main.java.GlobalState.getInstance().addPoints(2.5);
+                updatePoints();
             } else if (seaweed.getLayoutY() >= 590) {
                 root.getChildren().remove(seaweed);
                 drop.remove(i);
-                missed += 1;
-                lblMissed.setText("Missed: " + missed);
             }
         }
     }
