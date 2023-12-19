@@ -73,6 +73,8 @@ public class Na extends src.main.java.AbstractGameScene {
             layout.setLayoutX(175);
             layout.setLayoutY(60);
             buildGrid();
+
+            back_button.toFront();
         }
 
         public void buildGrid() {
@@ -168,7 +170,6 @@ public class Na extends src.main.java.AbstractGameScene {
             if (wordsToFind.isEmpty()) {
                 resetGame();
                 showAlert("역시 뇌섹녀!", "역시 뇌도 섹시한 내 여친!");
-
             }
         }
 

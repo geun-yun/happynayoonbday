@@ -43,7 +43,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
                         "주어진 연산기호 버튼만 쓸 수 있고,\n" +
                         "타자로는 정답을 입력 할 수 없어용.\n" +
                         "그러니 버튼으로만 정답을 완성해야겠죠?\n" +
-                        "숫자 6은 어떻게 만들지 궁금아네요 :)",
+                        "숫자 6은 어떻게 만들지 궁금하네요 :)",
                 140, 160);
         setBackGroundAsset("/yoon_background.png", "assets/yoon_bgm.mp3");
         createPoints("/yoon_points.png", 2);
@@ -81,10 +81,12 @@ public class Yoon extends src.main.java.AbstractGameScene {
         Button submitButton = new Button("정답 제출");
         submitButton.setFont(largeFont);
         submitButton.setPrefSize(120, 40); // Set preferred size
+        submitButton.setOnAction(e -> checkSolution());
 
         Button clearButton = new Button("지우기");
         clearButton.setFont(largeFont);
         clearButton.setPrefSize(120, 40); // Set preferred size
+        submitButton.setOnAction(e -> clearSolution());
 
         hbox = new HBox(20, targetNumberLabel, playerInputField, button1, button0, button4, submitButton, clearButton);
         hbox.setAlignment(Pos.CENTER);
@@ -100,6 +102,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
         root.getChildren().addAll(heartPane, hbox);
 
         back_button.toFront();
+        hbox.toFront();
     }
 
     private void positionButtonsInHeartShape() {

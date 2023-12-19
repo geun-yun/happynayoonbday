@@ -33,19 +33,19 @@ public class Kim extends src.main.java.AbstractGameScene {
     public Kim(src.main.java.Main main) {
         super(main, 1000, 600);
         setInstructionText(
-                "게임명: 김 김 김\n" +
+                "게임명: 김 김 김\n\n" +
                         "'김'은 마치 나윤이의 좋은 점이 너무 많은 것 처럼\n" +
                         "뜻을 아주 많이 갖고 있는 단어이죠 :)\n" +
                         "이제부터 마우스로 카트를 조종해서\n" +
                         "김을 질리도록 카트에 담을거에용.\n" +
                         "애정도 104%를 채워야 하는데,\n" +
                         "어떤 김을 담으면 좋을까요?\n" +
-                        "\n1. 골드 김씨 (+2.5*2.5 점, 드랍 확률 15%)\n" +
+                        "\n1. 골드 김씨 (+25 점, 드랍 확률 15%)\n" +
                         "2. 식용 김씨 (+2.5 점, 드랍 확률 50%)\n" +
-                        "3. 김새는 김씨 (-10.4 점, 드랍 확률 35%)\n" +
+                        "3. 김새는 김씨 (-2.5 점, 드랍 확률 35%)\n" +
                         "\n아참, 그리고 S키로 일시정지도 할 수 있어요!\n" +
                         "오른쪽 하단 버튼으로는 시작 페이지로 갈 수 있고요!",
-                180, 60);
+                180, 45);
         setBackGroundAsset("/kim_background.png", "assets/kim_bgm.mp3");
         createPoints("/kim_points.png",0);
         setupKeyHandling();
@@ -56,7 +56,7 @@ public class Kim extends src.main.java.AbstractGameScene {
         falling = 500;
 
         timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
-            speed += falling / 10400;
+            speed += falling / 5000;
             ImageView random = createBiasedRandom();
             drop.add(random);
             root.getChildren().add(random);
@@ -151,9 +151,9 @@ public class Kim extends src.main.java.AbstractGameScene {
                 if (type.equals("seaweed")) {
                     src.main.java.GlobalState.getInstance().addPoints(0,2.5);
                 } else if (type.equals("gold")) {
-                    src.main.java.GlobalState.getInstance().addPoints(0,2.5*2.5);
+                    src.main.java.GlobalState.getInstance().addPoints(0,25);
                 } else if (type.equals("vapour")) {
-                    src.main.java.GlobalState.getInstance().addPoints(0,-10.4);
+                    src.main.java.GlobalState.getInstance().addPoints(0,-2.5);
                 }
                 updatePoints(0);
                 

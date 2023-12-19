@@ -362,7 +362,7 @@ public class Main extends Application {
 
         boolean isFinished = true;
         for (int i = 0; i < 3; i++) {
-            if (src.main.java.GlobalState.getInstance().getTotalPoints(i) < 104) {
+            if (src.main.java.GlobalState.getInstance().getTotalPoints(i) < 0) {
                 isFinished = false;
                 break;
             }

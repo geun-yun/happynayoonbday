@@ -55,7 +55,6 @@ public abstract class AbstractGameScene implements src.main.java.GameScene {
         pointsText.setText(String.format("%.1f", currPoints) + "/104");
         Media ching = new Media(new File("assets/ching.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(ching);
-        player.setCycleCount(1);
         player.play();
     }
 
