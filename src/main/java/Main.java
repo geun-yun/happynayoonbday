@@ -16,8 +16,10 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -40,6 +42,14 @@ public class Main extends Application {
     Media mainSound;
     MediaPlayer mainMediaPlayer;
 
+    Text kimPointsText;
+    Text naPointsText;
+    Text yoonPointsText;
+    StackPane kimPointsStack;
+    StackPane naPointsStack;
+    StackPane yoonPointsStack;
+    MediaPlayer happyBday;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -52,6 +62,10 @@ public class Main extends Application {
     }
 
     public void display_start(final Stage  primaryStage) {
+        if (happyBday != null) {
+            happyBday.stop();
+        }
+
         String musicFile = "assets/opening_intro.mp3";
         Media sound = new Media(new File(musicFile).toURI().toString());
         final MediaPlayer mediaPlayer = new MediaPlayer(sound);
@@ -60,7 +74,6 @@ public class Main extends Application {
 
         // Load the image
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/opening_background.jpg")));
-
 
         // Set ImageView properties to stretch the image
         imageView.setFitHeight(screenHeight); // Set to your scene height
@@ -87,7 +100,7 @@ public class Main extends Application {
         double yPos = 120;
         for (String line : lines) {
             Text text = new Text(line);
-            text.setFont(aegukFont(24));
+            text.setFont(aegukFont(30));
 
             double xPos = (1000 - text.getLayoutBounds().getWidth()) / 2;
             text.setLayoutX(xPos);
@@ -210,15 +223,72 @@ public class Main extends Application {
                 new BackgroundSize(screenWidth, screenHeight, false, false, true, true)
         );
 
-        endButton = new Button("애정도 104% 충족 완료! 마지막 스테이지 ㄱㄱ");
+        endButton = new Button();
+        ImageView endGame = new ImageView("/ultimate_points.png");
+        endGame.setFitWidth(200);
+        endGame.setFitHeight(200);
+        endButton.setGraphic(endGame);
+
+        endButton.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-width: 0;");
+        endButton.setLayoutX(400);
+        endButton.setLayoutY(75);
+        endButton.setOnAction(e -> display_end());
         endButton.setVisible(false);
-        endButton.setLayoutX(100);
-        endButton.setLayoutY(50);
-        StackPane endPane = new StackPane(endButton);
+
+        ImageView kimPointsImage = new ImageView(new Image(getClass().getResourceAsStream("/kim_points.png")));
+        kimPointsImage.setFitHeight(100); // Set height as needed
+        kimPointsImage.setFitWidth(100); // Set width as needed
+
+        kimPointsText = new Text(String.format("%.1f", src.main.java.GlobalState.getInstance().getTotalPoints(0)) + "/104");
+        kimPointsText.setFont(Font.font("Arial", FontWeight.BOLD, 18)); // Set font, style, and size
+        kimPointsText.setFill(Color.WHITE); // Set text color to white
+
+        // Adding a black stroke (outline) to the text for visibility
+        kimPointsText.setStroke(Color.BLACK);
+        kimPointsText.setStrokeWidth(0.8); // Adjust width as needed
+
+        kimPointsStack = new StackPane(kimPointsImage, kimPointsText);
+        kimPointsStack.setLayoutX(15); // Position of the stack pane
+        kimPointsStack.setLayoutY(15);
+        fadeIn(kimPointsStack, 3,0);
+
+        ImageView naPointsImage = new ImageView(new Image(getClass().getResourceAsStream("/na_points.png")));
+        naPointsImage.setFitHeight(100); // Set height as needed
+        naPointsImage.setFitWidth(100); // Set width as needed
+
+        naPointsText = new Text(String.format("%.1f", src.main.java.GlobalState.getInstance().getTotalPoints(1)) + "/104");
+        naPointsText.setFont(Font.font("Arial", FontWeight.BOLD, 18)); // Set font, style, and size
+        naPointsText.setFill(Color.WHITE); // Set text color to white
+
+        // Adding a black stroke (outline) to the text for visibility
+        naPointsText.setStroke(Color.BLACK);
+        naPointsText.setStrokeWidth(0.8); // Adjust width as needed
+
+        naPointsStack = new StackPane(naPointsImage, naPointsText);
+        naPointsStack.setLayoutX(115); // Position of the stack pane
+        naPointsStack.setLayoutY(15);
+        fadeIn(naPointsStack, 3, 2);
+
+        ImageView yoonPointsImage = new ImageView(new Image(getClass().getResourceAsStream("/yoon_points.png")));
+        yoonPointsImage.setFitHeight(100); // Set height as needed
+        yoonPointsImage.setFitWidth(100); // Set width as needed
+
+        yoonPointsText = new Text(String.format("%.1f", src.main.java.GlobalState.getInstance().getTotalPoints(2)) + "/104");
+        yoonPointsText.setFont(Font.font("Arial", FontWeight.BOLD, 18)); // Set font, style, and size
+        yoonPointsText.setFill(Color.WHITE); // Set text color to white
+
+        // Adding a black stroke (outline) to the text for visibility
+        yoonPointsText.setStroke(Color.BLACK);
+        yoonPointsText.setStrokeWidth(0.8); // Adjust width as needed
+
+        yoonPointsStack = new StackPane(yoonPointsImage, yoonPointsText);
+        yoonPointsStack.setLayoutX(215); // Position of the stack pane
+        yoonPointsStack.setLayoutY(15);
+        fadeIn(yoonPointsStack, 3, 3);
 
         Pane root = new Pane();
         root.setBackground(new Background(bgImage));
-        root.getChildren().addAll(nameBox,endPane);
+        root.getChildren().addAll(nameBox,endButton, kimPointsStack, naPointsStack, yoonPointsStack);
         nameBox.setLayoutX(60);
         nameBox.setLayoutY(270);
 
@@ -230,23 +300,49 @@ public class Main extends Application {
     }
 
     public void display_end() {
+        mainMediaPlayer.stop();
         primaryStage.setTitle("나윤이 생일 축하 편지");
 
-//        String musicFile = "assets/main_bgm.mp3";
-//        mainSound = new Media(new File(musicFile).toURI().toString());
-//        mainMediaPlayer = new MediaPlayer(mainSound);
-//        mainMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
-//        mainMediaPlayer.play();
+        String musicFile = "assets/happy_bday.mp3";
+        Media happyBdayMedia = new Media(new File(musicFile).toURI().toString());
+        happyBday = new MediaPlayer(happyBdayMedia);
+        happyBday.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
+        happyBday.setVolume(5);
+        happyBday.play();
 
-        Text text = new Text("생축!");
-        text.setFont(Font.font("Verdana", 20));
-        text.setFill(Color.BLUE); // Set text color
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/nayoon.png")));
+        imageView.setOpacity(0.7);
 
-        Button restartButton = new Button("태초마을로 돌아가기");
-        restartButton.setOnAction(e  -> restart());
+        // Set ImageView properties to stretch the image
+        imageView.setFitHeight(600); // Set to your scene height
+        imageView.setFitWidth(1000); // Set to your scene width
+        imageView.setPreserveRatio(false);
 
-        StackPane root = new StackPane();
-        root.getChildren().addAll(restartButton,text);
+        Text letter = new Text(
+                "안녕 생일 축하해 사랑한다구!");
+        letter.setFont(letterFont(30));
+        letter.setFill(Color.BLACK); // Set letter color
+        letter.setLayoutX(200);
+        letter.setLayoutY(100);
+
+        Button restartButton = new Button();
+        restartButton.setOnAction(e -> restart());
+
+        ImageView restartImage = new ImageView(new Image(getClass().getResourceAsStream("/restart.png")));
+        restartImage.setFitHeight(100); // Set height as needed
+        restartImage.setFitWidth(100); // Set width as needed
+
+        StackPane restartStack = new StackPane(restartImage);
+        restartButton.setGraphic(restartStack); // Set the stack as the button's graphic
+        restartButton.setStyle("-fx-padding: 10; -fx-background-color: transparent;"); // Optional: adjust styling
+
+        // Now, use restartButton in your layout
+        Pane root = new Pane();
+        root.getChildren().addAll(imageView, letter, restartButton);
+
+        // Set the layout position of the restartButton if needed
+        restartButton.setLayoutX(875); // Position of the button
+        restartButton.setLayoutY(475);
 
         endScene = new Scene(root, screenWidth, screenHeight);
         primaryStage.setScene(endScene);
@@ -264,9 +360,37 @@ public class Main extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.show();
 
-        if (src.main.java.GlobalState.getInstance().getTotalPoints() >= 104) {
+        boolean isFinished = true;
+        for (int i = 0; i < 3; i++) {
+            if (src.main.java.GlobalState.getInstance().getTotalPoints(i) < 104) {
+                isFinished = false;
+                break;
+            }
+        }
+
+        double kimPoints = src.main.java.GlobalState.getInstance().getTotalPoints(0);
+        double naPoints = src.main.java.GlobalState.getInstance().getTotalPoints(1);
+        double yoonPoints = src.main.java.GlobalState.getInstance().getTotalPoints(2);
+        if (kimPoints >= 104) {
+            kimPointsText.setFill(Color.GREEN);
+        }
+        if (naPoints >= 104) {
+            naPointsText.setFill(Color.GREEN);
+        }
+        if (yoonPoints >= 104) {
+            yoonPointsText.setFill(Color.GREEN);
+        }
+        kimPointsText.setText(String.format("%.1f", kimPoints) + "/104");
+        naPointsText.setText(String.format("%.1f", naPoints) + "/104");
+        yoonPointsText.setText(String.format("%.1f", yoonPoints) + "/104");
+        fadeIn(kimPointsStack, 2, 0.5);
+        fadeIn(naPointsStack, 2, 0.5);
+        fadeIn(yoonPointsStack, 2, 0.5);
+
+        if (isFinished) {
+            System.out.println("finished");
             endButton.setVisible(true);
-            endButton.setOnAction(e -> display_end());
+            fadeIn(endButton, 5,0);
         }
     }
 
@@ -305,10 +429,10 @@ public class Main extends Application {
     }
 
     public Font aegukFont(double size) {
-        return Font.loadFont(getClass().getResourceAsStream("/독립서체_윤봉길_GS.otf"), size);
+        return Font.loadFont(getClass().getResourceAsStream("/JSArirang.otf"), size);
     }
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
+    public Font letterFont(double size) {
+        return Font.loadFont(getClass().getResourceAsStream("/letter_font.otf"), size);
     }
 }

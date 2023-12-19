@@ -8,11 +8,16 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +27,18 @@ public class Na extends src.main.java.AbstractGameScene {
     private BoardDisplay boardDisplay;
     public Na(src.main.java.Main main) {
         super(main, 1000, 600);
-        setInstructionText("Na Na Na");
+        setInstructionText(
+                "게임명: 나는 나윤이다\n\n" +
+                        "나윤이를 묘사하는 단어들을 찾아서 애정도 104%를 충족시켜봐용.\n" +
+                        "단어를 찾을 떄마다 철자 길이의 2.5배만큼 애정도가 증가합니다!\n" +
+                        "철자 순서대로 버튼을 눌러야 단어로 인정이 됩니당.\n" +
+                        "예시: (김나윤: 김 -> 나 -> 윤)\n" +
+                        "\n아, 그리고 한 철자가 단어 두개에 중복 될 일은 없게 설계됬지만,\n" +
+                        "중복 철자가 있으면 심각한 버그니까,\n" +
+                        "즉시 남친한테 연락 주세요!!!",
+                120, 160);
+        setBackGroundAsset("/na_background.png", "assets/na_bgm.mp3");
+        createPoints("/na_points.png",1);
     }
 
     @Override
@@ -33,7 +49,7 @@ public class Na extends src.main.java.AbstractGameScene {
 
     public class BoardDisplay implements EventHandler<ActionEvent> {
 
-        private VBox layout; // The main layout container
+        private HBox layout; // The main layout container
         private GridPane gridPane; // Grid for the word search buttons
         private Label[] labels; // Labels for words
         private int length; // Length of the wordsearch
@@ -50,12 +66,12 @@ public class Na extends src.main.java.AbstractGameScene {
             this.numOfWords = numOfWords;
             this.labels = new Label[numOfWords];
 
-            layout = new VBox(10);
+            layout = new HBox(30);
             gridPane = new GridPane();
             layout.setAlignment(Pos.CENTER);
             layout.setPadding(new Insets(10, 0, 10, 0));
-            layout.setLayoutX(200);
-            layout.setLayoutY(50);
+            layout.setLayoutX(175);
+            layout.setLayoutY(60);
             buildGrid();
         }
 
@@ -74,7 +90,8 @@ public class Na extends src.main.java.AbstractGameScene {
 
             String[] randLetters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
             Random r = new Random();
-            double btnSize = 25;
+            double btnSize = 30;
+            double fontSize = 13;
             for (int i = 0; i < length; i++) {
                 for (int j = 0; j < length; j++) {
                     int n = r.nextInt(26);
@@ -84,7 +101,7 @@ public class Na extends src.main.java.AbstractGameScene {
                     else
                         btn = new Button(board[i][j]);
                     btn.setOnAction(this);
-                    btn.setFont(new Font(10));
+                    btn.setFont(new Font(fontSize));
                     btn.setPrefSize(btnSize,btnSize);
                     btn.setMinSize(btnSize, btnSize);
                     btn.setMaxSize(btnSize, btnSize);
@@ -93,11 +110,13 @@ public class Na extends src.main.java.AbstractGameScene {
                 }
             }
 
-            HBox bottomPanel = new HBox(10);
+            VBox bottomPanel = new VBox(30);
             bottomPanel.setAlignment(Pos.CENTER);
-            bottomPanel.setPadding(new Insets(20));
+            bottomPanel.setPadding(new Insets(0, 0, 0, 20));
             for (int i = 0; i < numOfWords; i++) {
                 labels[i] = new Label(wordList.get(i));
+                labels[i].setFont(new Font("Arial", 30)); // Increase font size
+                labels[i].setTextFill(Color.HOTPINK); // Change font color
                 bottomPanel.getChildren().add(labels[i]);
             }
 
@@ -120,7 +139,7 @@ public class Na extends src.main.java.AbstractGameScene {
                 }
             } else {
                 selectedPositions.add(btn);
-                btn.setStyle("-fx-background-color: yellow;"); // Example style for selected button
+                btn.setStyle("-fx-background-color: pink;"); // Example style for selected button
             }
         }
 
@@ -142,13 +161,14 @@ public class Na extends src.main.java.AbstractGameScene {
                     btn.setStyle("-fx-background-color: lightgray;"); // Mark as found
                 }
                 clearSelectedBtns();
-                src.main.java.GlobalState.getInstance().addPoints(word.length() * 2.5);
-                updatePoints();
+                src.main.java.GlobalState.getInstance().addPoints(1,word.length() * 2.5);
+                updatePoints(1);
             }
 
             if (wordsToFind.isEmpty()) {
-                showAlert("You Win!", "Congratulations, you found all the words!");
                 resetGame();
+                showAlert("역시 뇌섹녀!", "역시 뇌도 섹시한 내 여친!");
+
             }
         }
 
@@ -168,7 +188,7 @@ public class Na extends src.main.java.AbstractGameScene {
             selectedPositions.clear();
         }
 
-        public VBox getLayout() {
+        public HBox getLayout() {
             return layout;
         }
 

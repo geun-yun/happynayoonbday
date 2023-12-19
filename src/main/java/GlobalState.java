@@ -2,7 +2,7 @@ package src.main.java;
 
 public class GlobalState {
     private static GlobalState instance = new GlobalState();
-    private double totalPoints = 0;
+    private double[] totalPoints = {0,0,0};
 
     private GlobalState() {}
 
@@ -10,14 +10,18 @@ public class GlobalState {
         return instance;
     }
 
-    public double getTotalPoints() {
-        return totalPoints;
+    public double getTotalPoints(int index) {
+        return totalPoints[index];
     }
 
-    public void addPoints(double points) {
-        totalPoints += points;
+    public void addPoints(int index, double points) {
+        totalPoints[index] += points;
     }
 
-    public void resetPoints() {totalPoints = 0;}
+    public void resetPoints() {
+        totalPoints[0] = 0;
+        totalPoints[1] = 0;
+        totalPoints[2] = 0;
+    }
 }
 
