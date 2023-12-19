@@ -242,12 +242,20 @@ public class Main extends Application {
         text.setFont(Font.font("Verdana", 20));
         text.setFill(Color.BLUE); // Set text color
 
+        Button restartButton = new Button("태초마을로 돌아가기");
+        restartButton.setOnAction(e  -> restart());
+
         StackPane root = new StackPane();
-        root.getChildren().add(text);
+        root.getChildren().addAll(restartButton,text);
 
         endScene = new Scene(root, screenWidth, screenHeight);
         primaryStage.setScene(endScene);
         primaryStage.show();
+    }
+
+    public void restart() {
+        display_start(primaryStage);
+        src.main.java.GlobalState.getInstance().resetPoints();
     }
 
     public void showMainScene() {

@@ -16,6 +16,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Kim extends src.main.java.AbstractGameScene {
     private AnimationTimer timer;
@@ -24,25 +25,11 @@ public class Kim extends src.main.java.AbstractGameScene {
     private Rectangle cont;
     private double speed;
     private double falling;
-    private Label lblMissed;
-//    private int missed;
 
     public Kim(src.main.java.Main main) {
         super(main, 1000, 600);
         setInstructionText("김 김 김");
     }
-
-//    @Override
-//    public void initialize() {
-//        VBox vBox = new VBox(10);
-//        vBox.setAlignment(Pos.CENTER);
-//        vBox.getChildren().add(createInstructionsText());
-//
-//        Button startButton = new Button("Start Game");
-//        startButton.setOnAction(e -> startGame());
-//
-//        root.getChildren().addAll(vBox, startButton);
-//    }
 
     public void displayGame() {
         speed = 1;
@@ -50,9 +37,9 @@ public class Kim extends src.main.java.AbstractGameScene {
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
             speed += falling / 3000;
-            ImageView seaweed = createSeaweed();
-            drop.add(seaweed);
-            root.getChildren().add(seaweed);
+            ImageView random = createBiasedRandom();
+            drop.add(random);
+            root.getChildren().add(random);
         }));
 
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -72,6 +59,19 @@ public class Kim extends src.main.java.AbstractGameScene {
         scene.setOnMouseMoved(e -> mouseX = e.getX());
     }
 
+    private ImageView createBiasedRandom()  {
+        Random random = new Random();
+        double probability  = random.nextDouble();
+
+        if (probability < 0.50) {
+            return createSeaweed();
+        } else if (probability < 0.85) {
+            return createVapour();
+        } else {
+            return createGold();
+        }
+    }
+
     private ImageView createSeaweed() {
         Image seaweed = new Image(getClass().getResourceAsStream("/seaweed.jpg"));
         ImageView seaweedImageView = new ImageView(seaweed);
@@ -79,6 +79,8 @@ public class Kim extends src.main.java.AbstractGameScene {
         seaweedImageView.setLayoutY(1);
         seaweedImageView.setFitHeight(50);
         seaweedImageView.setFitWidth(50);
+
+        seaweedImageView.getProperties().put("type", "seaweed");
         return seaweedImageView;
     }
 
@@ -89,6 +91,8 @@ public class Kim extends src.main.java.AbstractGameScene {
         goldImageView.setLayoutY(1);
         goldImageView.setFitHeight(50);
         goldImageView.setFitWidth(50);
+
+        goldImageView.getProperties().put("type", "gold");
         return goldImageView;
     }
 
@@ -99,6 +103,8 @@ public class Kim extends src.main.java.AbstractGameScene {
         vapourImageView.setLayoutY(1);
         vapourImageView.setFitHeight(50);
         vapourImageView.setFitWidth(50);
+
+        vapourImageView.getProperties().put("type", "vapour");
         return vapourImageView;
     }
     private Rectangle createRectangle() {
@@ -119,17 +125,26 @@ public class Kim extends src.main.java.AbstractGameScene {
         cont.setLayoutX(mouseX);
 
         for (int i = 0; i < drop.size(); i++) {
-            ImageView seaweed = drop.get(i);
-            seaweed.setLayoutY(seaweed.getLayoutY() + speed + seaweed.getLayoutY() / 150);
+            ImageView image = drop.get(i);
+            image.setLayoutY(image.getLayoutY() + speed + image.getLayoutY() / 150);
 
-            if (seaweed.getLayoutX() > cont.getLayoutX() && seaweed.getLayoutX() < cont.getLayoutX() + 70 &&
-                    seaweed.getLayoutY() >= 550) {
-                root.getChildren().remove(seaweed);
+            if (image.getLayoutX() > cont.getLayoutX() && image.getLayoutX() < cont.getLayoutX() + 70 &&
+                    image.getLayoutY() >= 550) {
+                root.getChildren().remove(image);
                 drop.remove(i);
-                src.main.java.GlobalState.getInstance().addPoints(2.5);
+
+                String type = (String) image.getProperties().get("type");
+                if (type.equals("seaweed")) {
+                    src.main.java.GlobalState.getInstance().addPoints(2.5);
+                } else if (type.equals("gold")) {
+                    src.main.java.GlobalState.getInstance().addPoints(25);
+                } else if (type.equals("vapour")) {
+                    src.main.java.GlobalState.getInstance().addPoints(-10.4);
+                }
                 updatePoints();
-            } else if (seaweed.getLayoutY() >= 590) {
-                root.getChildren().remove(seaweed);
+                
+            } else if (image.getLayoutY() >= 590) {
+                root.getChildren().remove(image);
                 drop.remove(i);
             }
         }

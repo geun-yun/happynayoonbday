@@ -1,4 +1,4 @@
-package WordSearchGame;
+package LovelyWordSearchGame;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,19 +14,98 @@ import java.util.Random;
  *
  ******************/
 
-public class WordsearchGenerator {
+public class LovelyWordSearchGenerator {
 
 	private int numOfWords;	//Number of words in the wordsearch
 	private String board[][]; //[row] [col]
-	private WordGenerator generator;
+	private LovelyWordGenerator generator;
 	private ArrayList<String> listOfWords = new ArrayList<String>();
 	private int length;
 	
-	public WordsearchGenerator(int numOfWords, int length){
-		generator = new WordGenerator();
+	public LovelyWordSearchGenerator(int numOfWords, int length){
+		generator = new LovelyWordGenerator();
 		this.numOfWords = numOfWords;
 		this.length = length;
 	}
+
+	public void setUpGuaranteed() {
+		do {
+			setUp();
+		} while (!isUnique());
+	}
+
+	public boolean isUnique() {
+		boolean[][] used = new boolean[length][length];
+
+		for (String word : listOfWords) {
+			// Find the start position and direction of each word
+			int[] startPos = findWordStartPosition(word);
+			if (startPos == null) {
+				return false; // Word not found, should not happen
+			}
+			boolean isVertical = isWordVertical(word, startPos);
+
+			for (int i = 0; i < word.length(); i++) {
+				int row = startPos[0] + (isVertical ? i : 0);
+				int col = startPos[1] + (isVertical ? 0 : i);
+
+				if (used[row][col]) {
+					return false; // Letter is used more than once
+				}
+				used[row][col] = true;
+			}
+		}
+		return true;
+	}
+	private int[] findWordStartPosition(String word) {
+		for (int row = 0; row < length; row++) {
+			for (int col = 0; col < length; col++) {
+				// Check if the first letter matches
+				if (board[row][col] != null && board[row][col].equals(word.substring(0, 1))) {
+					if ((col + word.length() <= length && checkHorizontal(word, row, col)) ||
+							(row + word.length() <= length && checkVertical(word, row, col))) {
+						return new int[]{row, col};
+					}
+				}
+			}
+		}
+		return null; // Word not found
+	}
+
+	private boolean checkHorizontal(String word, int row, int col) {
+		for (int i = 0; i < word.length(); i++) {
+			if (board[row][col + i] == null || !board[row][col + i].equals(word.substring(i, i + 1))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean checkVertical(String word, int row, int col) {
+		for (int i = 0; i < word.length(); i++) {
+			if (board[row + i][col] == null || !board[row + i][col].equals(word.substring(i, i + 1))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean isWordVertical(String word, int[] startPos) {
+		int row = startPos[0];
+		int col = startPos[1];
+
+		// Check if the word extends vertically
+		if (row + word.length() <= length) {
+			for (int i = 1; i < word.length(); i++) {
+				if (board[row + i][col] == null || !board[row + i][col].equals(word.substring(i, i + 1))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 
 	/**
 	 * Sets up the wordsearch grid by generating random words and inserting them into the 2D board array

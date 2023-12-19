@@ -17,5 +17,7 @@ public class GlobalState {
     public void addPoints(double points) {
         totalPoints += points;
     }
+
+    public void resetPoints() {totalPoints = 0;}
 }
 

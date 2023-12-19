@@ -1,4 +1,4 @@
-package WordSearchGame;
+package LovelyWordSearchGame;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,14 +14,14 @@ import java.util.Random;
  *
  *******************/
 
-public class WordGenerator {
+public class LovelyWordGenerator {
 	
 	private ArrayList<Integer> generatedNum = new ArrayList<Integer>(); //Arraylist which stores the generated number
 	private Random generator = new Random();	//Random generator
 	private ArrayList<String> dict = new ArrayList<String>();	//Dictionary of words
 	 
 	//Constructor
-	public WordGenerator(){
+	public LovelyWordGenerator(){
 		try{
 			  // Open the file that is the first 
 			  InputStream fstream = getClass().getResourceAsStream("/dict.txt");

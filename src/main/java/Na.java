@@ -1,11 +1,10 @@
 package src.main.java;
 
-import WordSearchGame.WordsearchGenerator;
+import LovelyWordSearchGame.LovelyWordSearchGenerator;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,24 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.geometry.Insets;
-import javafx.scene.paint.Color;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -38,9 +19,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Na extends src.main.java.AbstractGameScene {
-//    private Button back_button;
-//    private src.main.java.Main main;
-//    public Scene kim_scene;
     private BoardDisplay boardDisplay;
     public Na(src.main.java.Main main) {
         super(main, 1000, 600);
@@ -49,7 +27,7 @@ public class Na extends src.main.java.AbstractGameScene {
 
     @Override
     public void displayGame() {
-        boardDisplay = new BoardDisplay(15, 5);
+        boardDisplay = new BoardDisplay(14, 3);
         root.getChildren().add(boardDisplay.getLayout());
     }
 
@@ -82,8 +60,8 @@ public class Na extends src.main.java.AbstractGameScene {
         }
 
         public void buildGrid() {
-            WordsearchGenerator ws = new WordsearchGenerator(5, 15);
-            ws.setUp();
+            LovelyWordSearchGenerator ws = new LovelyWordSearchGenerator(3, 14);
+            ws.setUpGuaranteed();
             String[][] board = ws.getBoard();
             wordList = ws.getListOfWords();
             wordsToFind = new ArrayList<>(wordList);
@@ -172,14 +150,6 @@ public class Na extends src.main.java.AbstractGameScene {
                 showAlert("You Win!", "Congratulations, you found all the words!");
                 resetGame();
             }
-        }
-
-        private void showAlert(String title, String message) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
         }
 
         private void resetGame() {

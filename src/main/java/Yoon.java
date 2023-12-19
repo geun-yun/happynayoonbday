@@ -16,8 +16,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
     private boolean used1 = false, used0 = false, used4 = false;
     private Button button1, button0, button4;
     private TextField playerInputField;
-    private boolean awaitingCloseParenthesis = false;
-    private String operationAwaitingInput = "";
+    private HBox hbox;
 
     public Yoon(src.main.java.Main main) {
         super(main, 1000, 600);
@@ -29,44 +28,19 @@ public class Yoon extends src.main.java.AbstractGameScene {
                 "3. You can combine numbers (e.g., 10 or 10.4) to create new numbers.\n" +
                 "4. If you match the target number, you earn 2.5 times the target number in points.");
     }
-
-//    @Override
-//    public void initialize() {
-//        VBox vBox = new VBox(10);
-//        vBox.setAlignment(Pos.CENTER);
-//        vBox.getChildren().add(createInstructionsText());
-//
-//        Button startButton = new Button("Start Game");
-//        startButton.setOnAction(e -> startGame());
-//
-//        root.getChildren().addAll(vBox, startButton);
-//    }
-
-//    private Text createInstructionsText() {
-//        return new Text(
-//
-//        );
-//    }
-
-    public void onPlayerSubmit(String input) {
-        if(isCorrectAnswer(input)) {
-            double pointsEarned = 2.5 * targetNumber;
-            src.main.java.GlobalState.getInstance().addPoints(pointsEarned);
-        } else {
-
-        }
-    }
-
     public void displayGame() {
-        targetNumber = new Random().nextInt(10) + 1;
+        targetNumber = new Random().nextInt(9) + 1;
         used1 = used0 = used4 = false;
         setupGameplayUI();
     }
 
     private void setupGameplayUI() {
         Label targetNumberLabel = new Label("Target Number: " + targetNumber);
+
         playerInputField = new TextField();
         playerInputField.setPromptText("Enter your solution");
+        // Disable direct typing into the TextField
+        playerInputField.setEditable(false);
 
         setupNumberButtons();
         setUpOperationButtons();
@@ -74,12 +48,28 @@ public class Yoon extends src.main.java.AbstractGameScene {
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> checkSolution());
 
-        HBox hbox = new HBox(10, targetNumberLabel, playerInputField, button1, button0, button4, submitButton);
+        Button clearButton = new Button("Clear");
+        clearButton.setOnAction(e -> clearSolution());
+
+        hbox = new HBox(10, targetNumberLabel, playerInputField, button1, button0, button4, submitButton, clearButton);
         hbox.setAlignment(Pos.CENTER);
         hbox.setLayoutX(100);
         hbox.setLayoutY(50);
 
         root.getChildren().add(hbox);
+    }
+
+    private void resetTargetNumber() {
+        targetNumber = new Random().nextInt(9) + 1;
+        clearSolution();
+        Label targetNumberLabel = new Label("Target Number: " + targetNumber);
+        hbox.getChildren().set(0, targetNumberLabel);
+    }
+    private void clearSolution() {
+        toggleNumber("1", used1 = false, button1);
+        toggleNumber("0", used0 = false, button0);
+        toggleNumber("4", used4 = false, button4);
+        playerInputField.clear();
     }
     private void setUpOperationButtons() {
         // Adding buttons for basic operations
@@ -145,7 +135,6 @@ public class Yoon extends src.main.java.AbstractGameScene {
 
     private void checkSolution() {
         String playerInput = playerInputField.getText();
-        // TODO: Implement logic to evaluate player's input
         boolean isCorrect = isCorrectAnswer(playerInput);
 
         if (isCorrect) {
@@ -154,9 +143,12 @@ public class Yoon extends src.main.java.AbstractGameScene {
             updatePoints();
             // Display success message and points earned
             System.out.println("Right answer");
+            showAlert("You win!", "Noice");
+            resetTargetNumber();
         } else {
             // Display failure message
             System.out.println("Wrong answer");
+            showAlert("Rip", "Oops");
         }
     }
 
@@ -165,6 +157,15 @@ public class Yoon extends src.main.java.AbstractGameScene {
     }
 
     private boolean isCorrectAnswer(String input) {
+
+        String check104 = "104";
+        for (char c : input.toCharArray()) {
+            if (Character.isDigit(c) && check104.contains(String.valueOf(c))) {
+                check104 = check104.replace(c, ' ');
+            } else if (Character.isDigit(c)) {
+                return false;
+            }
+        }
 
         DoubleEvaluator eval = new DoubleEvaluator();
         for (int i = 0; i < input.length(); i++) {
@@ -186,8 +187,12 @@ public class Yoon extends src.main.java.AbstractGameScene {
                 }
             }
         }
-        Double result = eval.evaluate(input);
-        System.out.println(Math.round(result));
+        Double result = -1.0;
+        try {
+            result = eval.evaluate(input);
+        } catch (Exception e) {
+            System.out.println("Wrong expression :(");
+        }
         return (Math.round(result) == targetNumber);
     }
 

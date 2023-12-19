@@ -13,7 +13,6 @@
             <artifactId>javaluator</artifactId>
             <version>3.0.3</version>
         </dependency>
-        <!-- Your dependencies go here -->
     </dependencies>
     <build>
         <plugins>

@@ -1,6 +1,7 @@
 package src.main.java;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -84,4 +85,12 @@ public abstract class AbstractGameScene implements src.main.java.GameScene {
         displayGame();
     }
     protected abstract void displayGame();
+
+    protected void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
