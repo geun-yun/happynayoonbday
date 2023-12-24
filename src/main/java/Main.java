@@ -311,19 +311,18 @@ public class Main extends Application {
         happyBday.play();
 
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/nayoon.png")));
-        imageView.setOpacity(0.7);
+        imageView.setOpacity(0.2);
 
         // Set ImageView properties to stretch the image
         imageView.setFitHeight(600); // Set to your scene height
         imageView.setFitWidth(1000); // Set to your scene width
         imageView.setPreserveRatio(false);
 
-        Text letter = new Text(
-                "안녕 생일 축하해 사랑한다구!");
-        letter.setFont(letterFont(30));
+        Text letter = new Text(src.main.java.BirthdayLetter.getInstance().getLetter());
+        letter.setFont(letterFont(25));
         letter.setFill(Color.BLACK); // Set letter color
         letter.setLayoutX(200);
-        letter.setLayoutY(100);
+        letter.setLayoutY(50);
 
         Button restartButton = new Button();
         restartButton.setOnAction(e -> restart());
@@ -362,7 +361,7 @@ public class Main extends Application {
 
         boolean isFinished = true;
         for (int i = 0; i < 3; i++) {
-            if (src.main.java.GlobalState.getInstance().getTotalPoints(i) < 104) {
+            if (src.main.java.GlobalState.getInstance().getTotalPoints(i) < 0) {
                 isFinished = false;
                 break;
             }
