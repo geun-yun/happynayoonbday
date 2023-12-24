@@ -86,7 +86,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
         Button clearButton = new Button("지우기");
         clearButton.setFont(largeFont);
         clearButton.setPrefSize(120, 40); // Set preferred size
-        submitButton.setOnAction(e -> clearSolution());
+        clearButton.setOnAction(e -> clearSolution());
 
         hbox = new HBox(20, targetNumberLabel, playerInputField, button1, button0, button4, submitButton, clearButton);
         hbox.setAlignment(Pos.CENTER);
@@ -121,10 +121,16 @@ public class Yoon extends src.main.java.AbstractGameScene {
     private void resetTargetNumber() {
         targetNumber = new Random().nextInt(9) + 1;
         clearSolution();
-        Label targetNumberLabel = new Label("Target Number: " + targetNumber);
+
+        Font largeFont = new Font("Arial", 20); // Example font, adjust as needed
+        Label targetNumberLabel = new Label("타겟 숫자: " + targetNumber);
+        targetNumberLabel.setTextFill(Color.WHITE);
+        targetNumberLabel.setFont(largeFont);
+
         hbox.getChildren().set(0, targetNumberLabel);
     }
     private void clearSolution() {
+        System.out.println("clear solution");
         toggleNumber("1", used1 = false, button1);
         toggleNumber("0", used0 = false, button0);
         toggleNumber("4", used4 = false, button4);
@@ -206,6 +212,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
     }
 
     private void checkSolution() {
+        System.out.println("check solution");
         String playerInput = playerInputField.getText();
         boolean isCorrect = isCorrectAnswer(playerInput);
 
@@ -215,12 +222,12 @@ public class Yoon extends src.main.java.AbstractGameScene {
             updatePoints(2);
             // Display success message and points earned
             System.out.println("Right answer");
-            showAlert("You win!", "Noice");
+            showAlert("자기 최고!", "역시는 역시 ㄷㄷ");
             resetTargetNumber();
         } else {
             // Display failure message
             System.out.println("Wrong answer");
-            showAlert("Rip", "Oops");
+            showAlert("까비", "가끔씩 실수하는 인간미까지 ㄷㄷ");
         }
     }
 
