@@ -88,7 +88,7 @@ public class Yoon extends src.main.java.AbstractGameScene {
         clearButton.setPrefSize(120, 40); // Set preferred size
         clearButton.setOnAction(e -> clearSolution());
 
-        hbox = new HBox(20, targetNumberLabel, playerInputField, button1, button0, button4, submitButton, clearButton);
+        hbox = new HBox(20, targetNumberLabel, playerInputField, submitButton, clearButton);
         hbox.setAlignment(Pos.CENTER);
         hbox.setPadding(new Insets(15, 15, 15, 15)); // Increase padding
         Platform.runLater(() -> {
