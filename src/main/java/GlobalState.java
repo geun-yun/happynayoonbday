@@ -2,7 +2,7 @@ package src.main.java;
 
 public class GlobalState {
     private static GlobalState instance = new GlobalState();
-    private double[] totalPoints = {0,0,0};
+    private double[] totalPoints = {0,0,0}; // <--- 포인트 조작하는 곳
 
     private GlobalState() {}
 

@@ -105,7 +105,7 @@ public class Kim extends src.main.java.AbstractGameScene {
         falling = 500;
 
         timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
-            speed += falling / 5000;
+            speed += falling / 100000;
             ImageView random = createBiasedRandom();
             drop.add(random);
             root.getChildren().add(random);

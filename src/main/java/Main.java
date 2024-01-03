@@ -16,7 +16,6 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -41,6 +40,7 @@ public class Main extends Application {
     double screenHeight = 600;
     Media mainSound;
     MediaPlayer mainMediaPlayer;
+    StackPane voucherCode;
 
     Text kimPointsText;
     Text naPointsText;
@@ -286,9 +286,18 @@ public class Main extends Application {
         yoonPointsStack.setLayoutY(15);
         fadeIn(yoonPointsStack, 3, 3);
 
+        Text voucherCode = new Text("Please send an email with any content from your gmail to my gmail");
+        voucherCode.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        voucherCode.setFill(Color.PINK);
+        this.voucherCode = new StackPane(voucherCode);
+        double xPos = (1000 - voucherCode.getLayoutBounds().getWidth()) / 2;
+        this.voucherCode.setLayoutX(xPos);
+        this.voucherCode.setLayoutY(545);
+        this.voucherCode.setVisible(false);
+
         Pane root = new Pane();
         root.setBackground(new Background(bgImage));
-        root.getChildren().addAll(nameBox,endButton, kimPointsStack, naPointsStack, yoonPointsStack);
+        root.getChildren().addAll(nameBox,endButton, kimPointsStack, naPointsStack, yoonPointsStack, this.voucherCode);
         nameBox.setLayoutX(60);
         nameBox.setLayoutY(270);
 
@@ -311,7 +320,7 @@ public class Main extends Application {
         happyBday.play();
 
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/nayoon.png")));
-        imageView.setOpacity(0.2);
+        imageView.setOpacity(0.4);
 
         // Set ImageView properties to stretch the image
         imageView.setFitHeight(600); // Set to your scene height
@@ -360,9 +369,16 @@ public class Main extends Application {
         primaryStage.show();
 
         boolean isFinished = true;
+        boolean isUltimateFinished = true;
         for (int i = 0; i < 3; i++) {
-            if (src.main.java.GlobalState.getInstance().getTotalPoints(i) < 0) {
+            double point = src.main.java.GlobalState.getInstance().getTotalPoints(i);
+            if (point < 104) {
                 isFinished = false;
+                break;
+            }
+
+            if (point < 250) {
+                isUltimateFinished = false;
                 break;
             }
         }
@@ -387,10 +403,16 @@ public class Main extends Application {
         fadeIn(yoonPointsStack, 2, 0.5);
 
         if (isFinished) {
-            System.out.println("finished");
             endButton.setVisible(true);
             fadeIn(endButton, 5,0);
         }
+
+        if (isUltimateFinished) {
+            voucherCode.setVisible(true);
+            fadeIn(voucherCode, 10, 0);
+        }
+
+
     }
 
     public void showKim() {

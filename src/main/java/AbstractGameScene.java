@@ -63,9 +63,14 @@ public abstract class AbstractGameScene implements src.main.java.GameScene {
         pointsImage.setFitHeight(100); // Set height as needed
         pointsImage.setFitWidth(100); // Set width as needed
 
-        pointsText = new Text(String.format("%.1f", src.main.java.GlobalState.getInstance().getTotalPoints(index)) + "/104");
+        double currPoints = src.main.java.GlobalState.getInstance().getTotalPoints(index);
+        pointsText = new Text(String.format("%.1f", currPoints) + "/104");
         pointsText.setFont(Font.font("Arial", FontWeight.BOLD, 18)); // Set font, style, and size
-        pointsText.setFill(Color.WHITE); // Set text color to white
+        if (currPoints >= 104) {
+            pointsText.setFill(Color.GREEN);
+        } else {
+            pointsText.setFill(Color.WHITE);
+        }
 
         // Adding a black stroke (outline) to the text for visibility
         pointsText.setStroke(Color.BLACK);
