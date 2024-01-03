@@ -48,11 +48,12 @@ public class Kim extends src.main.java.AbstractGameScene {
                         "김을 질리도록 카트에 담을거에용.\n" +
                         "애정도 104%를 채워야 하는데,\n" +
                         "어떤 김을 담으면 좋을까요?\n" +
-                        "\n1. 골드 김씨 (+25 점, 드랍 확률 15%)\n" +
+                        "1. 골드 김씨 (+25 점, 드랍 확률 15%)\n" +
                         "2. 식용 김씨 (+2.5 점, 드랍 확률 50%)\n" +
                         "3. 김새는 김씨 (-2.5 점, 드랍 확률 35%)\n" +
-                        "\n아참, 그리고 S키로 일시정지도 할 수 있어요!\n" +
-                        "오른쪽 하단 버튼으로는 시작 페이지로 갈 수 있고요!",
+                        "\n아참, 그리고 S키로 일시정지/재생도 할 수 있어요!\n" +
+                        "오른쪽 하단 버튼으로는 메뉴 페이지로 갈 수 있고요!\n" +
+                        "메뉴로 가기 전에 꼭 일시정지 하고 나가주세요!!!",
                 180, 45);
         setBackGroundAsset("/kim_background.png", "assets/kim_bgm.mp3");
 
@@ -66,19 +67,19 @@ public class Kim extends src.main.java.AbstractGameScene {
         kim1View.setFitHeight(35);
         kim1View.setFitWidth(35);
         kim1View.setLayoutX(680);
-        kim1View.setLayoutY(270);
+        kim1View.setLayoutY(245);
         fadeIn(kim1View, 0.5, 8);
 
         kim2View.setFitHeight(35);
         kim2View.setFitWidth(35);
         kim2View.setLayoutX(690);
-        kim2View.setLayoutY(304);
+        kim2View.setLayoutY(278);
         fadeIn(kim2View, 0.5, 9.8);
 
         kim3View.setFitHeight(35);
         kim3View.setFitWidth(35);
         kim3View.setLayoutX(720);
-        kim3View.setLayoutY(335);
+        kim3View.setLayoutY(303);
         fadeIn(kim3View, 0.5, 11);
 
         root.getChildren().addAll(kim1View, kim2View, kim3View);

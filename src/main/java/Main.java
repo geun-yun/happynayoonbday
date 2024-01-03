@@ -374,12 +374,10 @@ public class Main extends Application {
             double point = src.main.java.GlobalState.getInstance().getTotalPoints(i);
             if (point < 104) {
                 isFinished = false;
-                break;
             }
 
             if (point < 250) {
                 isUltimateFinished = false;
-                break;
             }
         }
 

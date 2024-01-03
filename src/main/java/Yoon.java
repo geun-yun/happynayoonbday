@@ -272,6 +272,6 @@ public class Yoon extends src.main.java.AbstractGameScene {
         } catch (Exception e) {
             System.out.println("Wrong expression :(");
         }
-        return (Math.round(result) == targetNumber);
+        return (used0 && used1 && used4 && Math.round(result) == targetNumber);
     }
 }
